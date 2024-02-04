@@ -1,0 +1,365 @@
+units:
+  X: 0.9 # Extrusion width
+  B: 3*X
+  S: .7
+  Body_offset: .6
+  Lip_offset: 0.65
+  rpi_width: 18
+  rpi_height: 23
+  rpi_x_offset: rpi_width + 3
+  rpi_y_offset: 0
+  rpi_usb_width: 8.8
+  rpi_usb_height: 7.4
+  rpi_usb_oversize: 1.5
+  rpi_usb_y_offset: rpi_y_offset + rpi_height/2 + rpi_usb_oversize
+
+points:
+  zones:
+    matrix:
+      key:
+        bind: [B, B, B, B]
+      columns:
+        pinky_outer:
+          key:
+            # no bind at left
+            bind: [,,,]
+          rows:
+            bottom:
+              # no bind below
+              bind: [,,,]
+            home:
+            middle:
+            top:
+        pinky:
+          key:
+            # increase right binding to allow for spread to next col
+            bind: [,,,]
+          rows:
+            bottom:
+              # no bind below
+              bind: [,,0,]
+            home:
+            middle:
+            top:
+        ring:
+          key:
+            # 1.2U
+            stagger: 0.33U
+            # no left binding as pinky is smaller
+            bind: [,,,0]
+          rows:
+            bottom:
+            home:
+            middle:
+            top:
+              bind: [,0,,]
+        middle:
+          key:
+            stagger: 0.2U
+          rows:
+            bottom:
+            home:
+            middle:
+            top:
+              bind: [,0,,0]
+        index:
+          key:
+            stagger: -0.2U
+          rows:
+            bottom:
+            home:
+            middle:
+            top:
+              bind: [,0,,0]
+        index_inner:
+          key:
+            stagger: -0.2U
+            # increased right binding to give space for module
+            bind: [,0,,]
+          rows:
+            bottom:
+            home:
+            middle:
+              bind: [0,,,]
+            top:
+              bind: [,0,0,0]
+        extra:
+          key:
+            stagger: -0.2U
+          rows:
+            bottom:
+            home:
+            middle:
+              bind: [0,,,]
+            top:
+              skip: true
+      rows:
+        bottom:
+        home:
+        middle:
+        top:
+          # no bind above
+          bind: [0,,,]
+
+    thumbfan:
+      anchor:
+        ref: matrix_extra_bottom
+        shift: [ -3U, -1U]
+      columns:
+        outer:
+        home:
+        middle:
+        inner:
+      rows:
+        thumb:
+
+outlines:
+  _switch_holes:
+    - what: rectangle
+      where: true
+      size: 14
+      bound: false
+  _switch_clips:
+    - what: rectangle
+      where: true
+      size: [5, 16]
+      bound: false
+  _keys:
+    - what: rectangle
+      where: true
+      size: 18
+      bound: false
+  plate:
+    - what: polygon
+      points:
+          - ref: matrix_pinky_outer_bottom
+            shift: [ -S U, -S U ]
+          - ref: matrix_pinky_outer_top
+            shift: [ -S U, S U ]
+          - ref: matrix_ring_top
+            shift: [ -S U, S U ]
+          - ref: matrix_middle_top
+            shift: [ -S U, S U ]
+          - ref: matrix_middle_top
+            shift: [ S U, S U ]
+          - ref: matrix_index_top
+            shift: [ S U, S U]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset - S rpi_width, rpi_y_offset + S rpi_height ]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset + S rpi_width, rpi_y_offset + S rpi_height ]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset + S rpi_width,  -S rpi_height ]
+          - ref: matrix_extra_bottom
+            shift: [ S U, -S U ]
+          - ref: thumbfan_inner_thumb
+            shift: [S U, -S U]
+          - ref: thumbfan_outer_thumb
+            shift: [ -S U, -S U ]
+          - ref: matrix_pinky_bottom
+            shift: [ -S U, -S U]
+
+  _plate_inner_2:
+    - what: polygon
+      points:
+          - ref: matrix_pinky_outer_bottom
+            shift: [ -Lip_offset U, -Lip_offset U ]
+          - ref: matrix_pinky_outer_top
+            shift: [ -Lip_offset U, Lip_offset U ]
+          - ref: matrix_ring_top
+            shift: [ -Lip_offset U, Lip_offset U ]
+          - ref: matrix_middle_top
+            shift: [ -Lip_offset U, Lip_offset U ]
+          - ref: matrix_middle_top
+            shift: [ Lip_offset U, Lip_offset U ]
+          - ref: matrix_index_top
+            shift: [ Lip_offset U, Lip_offset U]
+          - ref: matrix_index_inner_top
+            shift: [  Lip_offset U, Lip_offset U]
+          - ref: matrix_extra_middle
+            shift: [ Lip_offset U, Lip_offset U ]
+          - ref: matrix_extra_bottom
+            shift: [ Lip_offset U, -Lip_offset U ]
+          - ref: thumbfan_inner_thumb
+            shift: [Lip_offset U, -Lip_offset U]
+          - ref: thumbfan_outer_thumb
+            shift: [ -Lip_offset U, -Lip_offset U ]
+          - ref: matrix_pinky_bottom
+            shift: [ -Lip_offset U, -Lip_offset U]
+
+  plate_inner_3:
+    - what: polygon
+      points:
+          - ref: matrix_pinky_outer_bottom
+            shift: [ -Body_offset U, -Body_offset U ]
+          - ref: matrix_pinky_outer_top
+            shift: [ -Body_offset U, Body_offset U ]
+          - ref: matrix_ring_top
+            shift: [ -Body_offset U, Body_offset U ]
+          - ref: matrix_middle_top
+            shift: [ -Body_offset U, Body_offset U ]
+          - ref: matrix_middle_top
+            shift: [ Body_offset U, Body_offset U ]
+          - ref: matrix_index_top
+            shift: [ Body_offset U, Body_offset U]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset - Body_offset rpi_width, rpi_y_offset + Body_offset rpi_height ]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset + Body_offset rpi_width, rpi_y_offset + Body_offset rpi_height ]
+          - ref: matrix_index_inner_top
+            shift: [  rpi_x_offset + Body_offset rpi_width,  -Body_offset rpi_height ]
+          - ref: matrix_extra_bottom
+            shift: [ Body_offset U, -Body_offset U ]
+          - ref: thumbfan_inner_thumb
+            shift: [Body_offset U, -Body_offset U]
+          - ref: thumbfan_outer_thumb
+            shift: [ -Body_offset U, -Body_offset U ]
+          - ref: matrix_pinky_bottom
+            shift: [ -Body_offset U, -Body_offset U]
+
+  rpi_pico:
+    - what: rectangle
+      where: true
+      adjust:
+        ref: matrix_index_inner_top
+        shift: [rpi_x_offset, rpi_y_offset]
+      size: [rpi_width, rpi_height]
+  _usb_cutout:
+    - what: rectangle
+      where: true
+      adjust:
+        ref: matrix_index_inner_top
+        shift: [rpi_x_offset, rpi_usb_y_offset]
+      size: [rpi_usb_width, rpi_usb_height]
+  _posts_template:
+    $params: [__r__]
+    top_left:
+      what: circle
+      adjust:
+        ref: matrix_pinky_outer_top
+        shift: [0.5U, -0.5U]
+      radius: __r__
+    top_right:
+      what: circle
+      adjust:
+        ref: matrix_extra_middle
+        shift: [0.5U+2, 0U]
+      radius: __r__
+    bottom_left:
+      what: circle
+      adjust:
+        ref: matrix_pinky_outer_bottom
+        shift: [0.5U, 0.5U]
+      radius: __r__
+    bottom_right:
+      what: circle
+      adjust:
+        ref: matrix_extra_bottom
+        shift: [0.5U+2, 0.5U]
+      radius: __r__
+  _posts:
+    $extends: outlines._posts_template
+    $args: [2.6]
+  _screw_holes:
+    $extends: outlines._posts_template
+    $args: [0.8]
+  _lid_bosses:
+    $extends: outlines._posts_template
+    $args: [3.5]
+  _lid_screw_heads:
+    $extends: outlines._posts_template
+    $args: [2.4]
+
+  case_top:
+    - what: outline
+      name: plate
+    - what: outline
+      name: _switch_holes
+      operation: subtract
+    - what: outline
+      name: _switch_clips
+      operation: subtract
+  case_wall:
+    - what: outline
+      name: plate
+    - what: outline
+      name: plate_inner_3
+      operation: subtract
+  case_lip:
+    - what: outline
+      name: plate
+    - what: outline
+      name: _plate_inner_2
+      operation: subtract
+  preview:    
+    - what: outline
+      name: plate
+    - what: outline
+      name: _keys
+      operation: stack
+    - what: outline
+      name: _switch_holes
+      operation: stack
+    - what: outline
+      name: _switch_clips
+      operation: stack
+    - what: outline
+      name: rpi_pico
+      operation: stack
+    - what: outline
+      name: _usb_cutout
+      operation: stack
+    - what: outline
+      name: _posts
+      operation: stack
+    - what: outline
+      name: _lid_bosses
+      operation: stack
+    # wall
+    - what: outline
+      name: plate_inner_3
+      operation: stack
+cases:
+  body:
+    # switch is 8.3 mm deep
+    # plate is 2mm
+    # case is 6.4mm
+    # lid is 1.6mm
+    # total 10mm depth, 8.4mm inner
+    - name: case_lip
+      extrude: 1.6
+    - name: case_wall
+      extrude: 6.4
+      shift: [0, 0, 1.6]
+    - name: case_top
+      extrude: 2
+      shift: [0, 0, 6 + 1.6]
+    - name: _switch_clips
+      extrude: 1
+      shift: [0, 0, 6 + 1.6]
+      operation: subtract
+    - name: _posts
+      extrude: 6 - 1.6
+      shift: [0, 0, 3.2]
+    - name: _screw_holes
+      extrude: 6 - 1.6
+      shift: [0, 0, 3.2]
+      operation: subtract
+    - name: _usb_cutout
+      extrude: 3.6
+      shift: [0, 0, 3.2]
+      operation: subtract
+  lid:
+    - name: _plate_inner_2
+      extrude: 1.6
+    - name: _lid_bosses
+      extrude: 1.6
+      shift: [0, 0, 1.6]
+    - name: _screw_holes
+      extrude: 1.8
+      shift: [0, 0, 1.5]
+      operation: subtract
+    - name: _lid_screw_heads
+      extrude: 1.8
+      shift: [0, 0, -0.1]
+      operation: subtract
