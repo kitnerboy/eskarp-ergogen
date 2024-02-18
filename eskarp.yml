@@ -12,7 +12,9 @@ units:
   rpi_usb_height: 7.4
   rpi_usb_oversize: 1.5
   rpi_usb_y_offset: rpi_y_offset + rpi_height/2 + rpi_usb_oversize
-
+  jack_width: 11.5
+  jack_height: 7.4
+  jack_radius: 2.8
 points:
   zones:
     matrix:
@@ -22,22 +24,21 @@ points:
         pinky_outer:
           key:
             # no bind at left
-            bind: [,,,]
+
           rows:
             bottom:
               # no bind below
-              bind: [,,,]
+
             home:
             middle:
             top:
         pinky:
           key:
             # increase right binding to allow for spread to next col
-            bind: [,,,]
+
           rows:
             bottom:
-              # no bind below
-              bind: [,,0,]
+              # no bind belo
             home:
             middle:
             top:
@@ -46,7 +47,7 @@ points:
             # 1.2U
             stagger: 0.33U
             # no left binding as pinky is smaller
-            bind: [,,,0]
+
           rows:
             bottom:
             home:
@@ -90,7 +91,7 @@ points:
             bottom:
             home:
             middle:
-              bind: [0,,,]
+              skip: true
             top:
               skip: true
       rows:
@@ -104,12 +105,20 @@ points:
     thumbfan:
       anchor:
         ref: matrix_extra_bottom
-        shift: [ -3U, -1U]
+        shift: [ -1.5U, -1U]
       columns:
-        outer:
         home:
+          key:
+            splay: -15
         middle:
+          key:
+            splay: -15
+            stagger: -5
         inner:
+          key:
+            splay: -15
+            stagger: -5
+          
       rows:
         thumb:
 
@@ -154,13 +163,20 @@ outlines:
           - ref: matrix_extra_bottom
             shift: [ S U, -S U ]
           - ref: thumbfan_inner_thumb
+            shift: [ -Body_offset U, S U]
+          - ref: thumbfan_inner_thumb
+            shift: [ S U, S U]
+          - ref: thumbfan_inner_thumb
             shift: [S U, -S U]
-          - ref: thumbfan_outer_thumb
+          - ref: thumbfan_home_thumb
             shift: [ -S U, -S U ]
+          
+          - ref: matrix_pinky_bottom
+            shift: [ Body_offset U, -S U]
           - ref: matrix_pinky_bottom
             shift: [ -S U, -S U]
 
-  _plate_inner_2:
+  plate_inner_2:
     - what: polygon
       fillet: 2
       points:
@@ -185,9 +201,16 @@ outlines:
           - ref: matrix_extra_bottom
             shift: [ Lip_offset U, -Lip_offset U ]
           - ref: thumbfan_inner_thumb
+            shift: [ -Lip_offset U, Lip_offset U]
+          - ref: thumbfan_inner_thumb
+            shift: [ Lip_offset U, Lip_offset U]
+          - ref: thumbfan_inner_thumb
             shift: [Lip_offset U, -Lip_offset U]
-          - ref: thumbfan_outer_thumb
+          - ref: thumbfan_home_thumb
             shift: [ -Lip_offset U, -Lip_offset U ]
+          
+          - ref: matrix_pinky_bottom
+            shift: [ Lip_offset U, -Lip_offset U]
           - ref: matrix_pinky_bottom
             shift: [ -Lip_offset U, -Lip_offset U]
 
@@ -216,13 +239,37 @@ outlines:
           - ref: matrix_extra_bottom
             shift: [ Body_offset U, -Body_offset U ]
           - ref: thumbfan_inner_thumb
+            shift: [ -S U, Body_offset U]
+          - ref: thumbfan_inner_thumb
+            shift: [ Body_offset U, Body_offset U]
+          - ref: thumbfan_inner_thumb
             shift: [Body_offset U, -Body_offset U]
-          - ref: thumbfan_outer_thumb
+          - ref: thumbfan_home_thumb
             shift: [ -Body_offset U, -Body_offset U ]
+          
+          - ref: matrix_pinky_bottom
+            shift: [ Body_offset U, -Body_offset U]
           - ref: matrix_pinky_bottom
             shift: [ -Body_offset U, -Body_offset U]
 
+  jack_case:
+    - what: rectangle
+      where: true
+      adjust:
+        ref: matrix_extra_home
+        shift: [S U - jack_width/2 - 1, U]
+      size: [jack_width, jack_height]
+  jack_cutout:
+    - what: circle
+      where: true
+      adjust:
+        ref: matrix_extra_home
+        shift: [S U + 1, U]
+      radius: jack_radius
+      
 
+
+    
   rpi_pico:
     - what: rectangle
       where: true
@@ -262,14 +309,14 @@ outlines:
       what: circle
       adjust:
         ref: matrix_middle_home
-        shift: [0.5U, 0.5U]
+        shift: [0.47U, 0.5U]
       radius: __r__
 
     bottom_left:
       what: circle
       adjust:
         ref: matrix_pinky_bottom
-        shift: [0.6U, -0.5U]
+        shift: [0.65U, -0.3U]
       radius: __r__
     bottom_right:
       what: circle
@@ -309,7 +356,7 @@ outlines:
     - what: outline
       name: plate
     - what: outline
-      name: _plate_inner_2
+      name: plate_inner_2
       operation: subtract
   preview:
     - what: outline
@@ -320,6 +367,12 @@ outlines:
     - what: outline
       name: _switch_clips
       operation: subtract
+    - what: outline
+      name: jack_case
+      operation: stack
+    - what: outline
+      name: jack_cutout
+      operation: stack
     - what: outline
       name: rpi_pico
       operation: stack
@@ -366,8 +419,13 @@ cases:
       extrude: 3.6
       shift: [0, 0, 3.2]
       operation: subtract
+    - name: jack_cutout
+      extrude: 3
+      shift: [-2, 0, 4.4]
+      rotate: [0, 90, 0]
+      operation: subtract
   lid:
-    - name: _plate_inner_2
+    - name: plate_inner_2
       extrude: 1.6
     - name: _lid_bosses
       extrude: 1.6
