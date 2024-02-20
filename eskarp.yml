@@ -8,52 +8,51 @@ units:
   rpi_height: 23
   rpi_x_offset: rpi_width + 3
   rpi_y_offset: 0
-  rpi_usb_width: 8.8
+  rpi_usb_width: 9
   rpi_usb_height: 7.4
+  rpi_usb_thickness: 3.8
   rpi_usb_oversize: 1.5
+
+  top_case_thickness: 2
+  lid_thickness: 1.6
+  case_height: 10
+
+  switch_clips_cutout_depth: 1
+
+  bottom_post_height: 1.6
+  top_post_height: case_height - lid_thickness - top_case_thickness - bottom_post_height
+
+
   rpi_usb_y_offset: rpi_y_offset + rpi_height/2 + rpi_usb_oversize
   jack_width: 11.5
   jack_height: 7.4
-  jack_radius: 2.8
+  jack_radius: 3
 points:
   zones:
     matrix:
-      key:
-        bind: [B, B, B, B]
       columns:
         pinky_outer:
           key:
-            # no bind at left
-
           rows:
             bottom:
-              # no bind below
-
             home:
             middle:
             top:
         pinky:
           key:
-            # increase right binding to allow for spread to next col
-
           rows:
             bottom:
-              # no bind belo
             home:
             middle:
             top:
         ring:
           key:
-            # 1.2U
             stagger: 0.33U
-            # no left binding as pinky is smaller
-
           rows:
             bottom:
             home:
             middle:
             top:
-              bind: [,0,,]
         middle:
           key:
             stagger: 0.2U
@@ -62,7 +61,6 @@ points:
             home:
             middle:
             top:
-              bind: [,0,,0]
         index:
           key:
             stagger: -0.2U
@@ -71,19 +69,14 @@ points:
             home:
             middle:
             top:
-              bind: [,0,,0]
         index_inner:
           key:
             stagger: -0.2U
-            # increased right binding to give space for module
-            bind: [,0,,]
           rows:
             bottom:
             home:
             middle:
-              bind: [0,,,]
             top:
-              bind: [,0,0,0]
         extra:
           key:
             stagger: -0.2U
@@ -99,8 +92,6 @@ points:
         home:
         middle:
         top:
-          # no bind above
-          bind: [0,,,]
 
     thumbfan:
       anchor:
@@ -118,7 +109,7 @@ points:
           key:
             splay: -15
             stagger: -5
-          
+
       rows:
         thumb:
 
@@ -170,7 +161,7 @@ outlines:
             shift: [S U, -S U]
           - ref: thumbfan_home_thumb
             shift: [ -S U, -S U ]
-          
+
           - ref: matrix_pinky_bottom
             shift: [ Body_offset U, -S U]
           - ref: matrix_pinky_bottom
@@ -208,7 +199,7 @@ outlines:
             shift: [Lip_offset U, -Lip_offset U]
           - ref: thumbfan_home_thumb
             shift: [ -Lip_offset U, -Lip_offset U ]
-          
+
           - ref: matrix_pinky_bottom
             shift: [ Lip_offset U, -Lip_offset U]
           - ref: matrix_pinky_bottom
@@ -246,7 +237,7 @@ outlines:
             shift: [Body_offset U, -Body_offset U]
           - ref: thumbfan_home_thumb
             shift: [ -Body_offset U, -Body_offset U ]
-          
+
           - ref: matrix_pinky_bottom
             shift: [ Body_offset U, -Body_offset U]
           - ref: matrix_pinky_bottom
@@ -264,12 +255,11 @@ outlines:
       where: true
       adjust:
         ref: matrix_extra_home
-        shift: [S U + 1, U]
+        shift: [S U - 0.8, U]
       radius: jack_radius
       
 
 
-    
   rpi_pico:
     - what: rectangle
       where: true
@@ -343,9 +333,6 @@ outlines:
     - what: outline
       name: _switch_holes
       operation: subtract
-    - what: outline
-      name: _switch_clips
-      operation: subtract
   case_wall:
     - what: outline
       name: plate
@@ -396,43 +383,60 @@ cases:
     # case is 6.4mm
     # lid is 1.6mm
     # total 10mm depth, 8.4mm inner
+
+    # Slot to fit lid into
     - name: case_lip
-      extrude: 1.6
+      extrude: lid_thickness
+      shift: [-50, -30, 0]
+
+    # Case wall without top plate and lip
     - name: case_wall
-      extrude: 6.4
-      shift: [0, 0, 1.6]
+      extrude: case_height - lid_thickness - top_case_thickness
+      shift: [ -50, -30, lid_thickness]
+
+    # Top plate
     - name: case_top
-      extrude: 2
-      shift: [0, 0, 6 + 1.6]
+      extrude: top_case_thickness
+      shift: [ -50, -30, 6 + lid_thickness]
+
+    # Non through holes so switch can keep in place and not easily extracted from top plate
     - name: _switch_clips
-      extrude: 1
-      shift: [0, 0, 6 + 1.6]
+      extrude: switch_clips_cutout_depth
+      shift: [-50, -30, 6 + lid_thickness]
       operation: subtract
+
+    # Posts for screw hole
     - name: _posts
-      extrude: 6 - 1.6
-      shift: [0, 0, 3.2]
+      extrude: top_post_height
+      shift: [-50, -30, lid_thickness + bottom_post_height]
+
+    # Screw holes in posts
     - name: _screw_holes
-      extrude: 6 - 1.6
-      shift: [0, 0, 3.2]
+      extrude: top_post_height
+      shift: [-50, -30, lid_thickness + bottom_post_height]
       operation: subtract
+
+    # Cutout in case wall to fit rpi pico's usb socket
     - name: _usb_cutout
-      extrude: 3.6
-      shift: [0, 0, 3.2]
+      extrude: rpi_usb_thickness
+      shift: [-50, -30, 1.8]
       operation: subtract
+
+    # Cutout in case wall to fit audio jack socket
     - name: jack_cutout
-      extrude: 3
-      shift: [-2, 0, 4.4]
+      extrude: 2
+      shift: [-50, -30, 4.3]
       rotate: [0, 90, 0]
       operation: subtract
   lid:
     - name: plate_inner_2
-      extrude: 1.6
+      extrude: lid_thickness
     - name: _lid_bosses
-      extrude: 1.6
-      shift: [0, 0, 1.6]
+      extrude: bottom_post_height
+      shift: [0, 0, lid_thickness]
     - name: _screw_holes
-      extrude: 1.8
-      shift: [0, 0, 1.5]
+      extrude: bottom_post_height + 0.2
+      shift: [0, 0, lid_thickness]
       operation: subtract
     - name: _lid_screw_heads
       extrude: 1.8
